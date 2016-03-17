@@ -25,9 +25,14 @@ pandoc=pandoc $(pandoc_flags) -o $@ $<
 
 
 
-.PHONY: all
-all: test.Rmd
+.PHONY: all_rmarkdown
+all_rmarkdown: $(files:=.Rmd)
 	$(render)
 
-all: render_output_format=all
+all_rmarkdown: render_output_format=all
+
+
+
+.PHONY: all_knitr
+all_knitr: $(files:=-knitr.pdf) $(files:=-knitr.html) $(files:=-knitr.docx)
 
