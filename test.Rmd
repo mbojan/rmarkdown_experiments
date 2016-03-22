@@ -1,6 +1,7 @@
 ---
 title: "Tytuł"
 author: "Michał Bojanowski"
+date: "2016-03-22"
 output: 
   html_document:
     toc: yes
@@ -26,17 +27,39 @@ set.seed(123)
 
 Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. 
 
+Now a list:
+
+- item 1
+- item 2
+    + subitem
+    + subitem
+    + subitem
+- item 3
+
+Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. 
+
+1. Item 1
+2. Item 1
+    - item 2
+        + subitem
+3. Item 1
+
+
 ```{r r_code}
 x <- rnorm(100)
 x
 ```
 
+## Subsection with a quote
 
-# Second section
+> This is a quote.
+
+
+### Subsubsection
 
 Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. 
 
-## Subsection
+## Subsection with figure
 
 ```{r r_figure}
 hist(x)
