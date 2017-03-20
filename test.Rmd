@@ -3,22 +3,35 @@ title: "Tytuł"
 author: "Michał Bojanowski"
 date: "2016-03-22"
 output: 
-  html_document:
-    toc: yes
-    number_sections: yes
-  word_document:
-    toc: yes
-    keep_md: yes
   pdf_document:
     toc: yes
     number_sections: yes
+    keep_tex: yes
+    includes:
+      in_header: preamble.tex
+  html_document:
+    toc: yes
+    number_sections: yes
+    keep_md: yes
+  bookdown::html_document2:
+    toc: yes
+    number_sections: yes
+    keep_md: yes
+  bookdown::pdf_book:
+    toc: yes
+    number_sections: yes
+    keep_tex: yes
+    includes:
+      in_header: preamble.tex
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, cache=FALSE}
+source("functions.R")
+
 knitr::opts_chunk$set(
   echo = TRUE,
   cache=FALSE
-  )
+)
 
 set.seed(123)
 ```
@@ -59,8 +72,76 @@ x
 
 Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. 
 
-## Subsection with figure
 
-```{r r_figure}
-hist(x)
+# Tables
+
+```{r table-data-frame}
+d <- data.frame(
+  Variable = LETTERS[1:5],
+  num = 1:5,
+  ch = letters[1:5],
+  f = factor(letters[1:5]),
+  logical = as.logical(sample(0:1, 5, replace=TRUE)),
+  stringsAsFactors = FALSE
+)
+```
+
+```{r knitrtable}
+knitr::kable(d, caption = "This is knitr kable table.")
+```
+
+See table \@ref(tab:knitrtable).
+
+
+```{r eval=to_html()}
+htmlTable::htmlTable(
+  d,
+  rnames = FALSE,
+  rgroup = c("First group", "Second group"),
+  n.rgroup = c(2,3),
+  cgroup = c("", paste("Model", 1:2)),
+  n.cgroup = c(1, 2, 2)
+)
+```
+
+
+```{r eval=to_pdf(), results='asis'}
+dd <- d[,-1]
+rownames(dd) <- d$Variable
+Hmisc::latex(
+  dd, 
+  dcolumn=TRUE,
+  file="", booktabs=TRUE, 
+  rgroup = c("First group", "Second group"),
+  n.rgroup = c(2,3),
+  cgroup = paste("Model", 1:2),
+  n.cgroup = c(2, 2),
+  assignment = FALSE
+)
+```
+
+
+## Anytable
+
+```{r, results="asis"}
+anytable(
+  d,
+  rnames = "Variable",
+  rgroup = c("First group", "Second group"),
+  n.rgroup = c(2,3),
+  cgroup = paste("Model", 1:2),
+  n.cgroup = c(2, 2),
+  label="tableone",
+  caption = "This is table one."
+)
+```
+
+
+See table \@ref(tab:tableone).
+
+# Appendix {-}
+
+```{r output}
+knitr::opts_knit$get("out.format")
+knitr::opts_knit$get("rmarkdown.pandoc.to")
 ```
