@@ -3,6 +3,10 @@ title: "Tytuł"
 author: "Michał Bojanowski"
 date: "2016-03-22"
 output: 
+  bookdown::html_document2:
+    toc: yes
+    number_sections: yes
+    keep_md: yes
   pdf_document:
     toc: yes
     number_sections: yes
@@ -10,10 +14,6 @@ output:
     includes:
       in_header: preamble.tex
   html_document:
-    toc: yes
-    number_sections: yes
-    keep_md: yes
-  bookdown::html_document2:
     toc: yes
     number_sections: yes
     keep_md: yes
@@ -35,42 +35,6 @@ knitr::opts_chunk$set(
 
 set.seed(123)
 ```
-
-# First section
-
-Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. 
-
-Now a list:
-
-- item 1
-- item 2
-    + subitem
-    + subitem
-    + subitem
-- item 3
-
-Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. 
-
-1. Item 1
-2. Item 1
-    - item 2
-        + subitem
-3. Item 1
-
-
-```{r r_code}
-x <- rnorm(100)
-x
-```
-
-## Subsection with a quote
-
-> This is a quote.
-
-
-### Subsubsection
-
-Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. 
 
 
 # Tables
@@ -119,6 +83,11 @@ Hmisc::latex(
   assignment = FALSE
 )
 ```
+
+
+
+
+
 
 
 ## Anytable
