@@ -1,0 +1,57 @@
+---
+title: "Untitled"
+output: 
+  bookdown::html_document2:
+    keep_md: yes
+---
+
+
+```{r testtable}
+library(magrittr)
+
+test_table <- function(caption, label) {
+  require(magrittr)
+  m <- matrix(1:2, 4, 3)
+  lab <- paste0("(#tab:", label, ")")
+  out <- c(
+    "<table style='width: 50%;'>",
+    paste0("<caption>", lab, caption, "</caption>"),
+    structure( paste0("<td>", m, "</td>"), dim=dim(m) ) %>%
+      apply(1, paste, collapse="") %>%
+      paste0("<tr>", ., "</tr>"),
+    "</table>"
+  )
+  cat(out, sep="\n")
+}
+```
+
+
+See
+
+```{r tableone, results="asis"}
+test_table("This is a table", label="tableone")
+```
+
+
+See \@ref(tab:tableone).
+
+
+```{r}
+tab <- withr::with_options(
+  list(htmlTableCompat="html"),
+  htmlTable::htmlTable(matrix(1:12, 4 ,3), caption="(#tab:tabletwo)A table")
+)
+cat(unclass(tab))
+```
+
+```{r, results="asis"}
+tab
+```
+
+HTML
+
+```{r, results="markup"}
+cat(unclass(tab))
+```
+
+See table \@ref(tab:tabletwo).
