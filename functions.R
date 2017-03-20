@@ -73,16 +73,12 @@ anytable_html <- function(  x,   ...) {
   
   fun <- get("htmlTable", asNamespace("htmlTable"))
   
-  
   if(!is.null(args$caption)) {
-    cat(paste0(
-      "Table: ",
-      "(\\#tab:", args$label, ")",
+    args$caption <- paste0(
+      "(#tab:", args$label, ")",
       args$caption,
       "\n\n"
-    ) )
-    args$caption <- NULL
-    args$label <- NULL
+    )
   }
   
   do.call(fun, c(list(x=x), args))
