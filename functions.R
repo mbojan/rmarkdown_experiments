@@ -1,4 +1,10 @@
 
+
+# Catching rmarkdown output format ---------------------
+
+
+
+
 out_format <- function() {
   knitr::opts_knit$get("rmarkdown.pandoc.to")
 }
@@ -22,10 +28,21 @@ to_word <- function()
 # anytable ---------------------------------------------
 
 
+anytable <- function(x, ...) UseMethod("anytable")
 
+anytable.default <- function(x, ...) {
+  anytable.data.frame(as.data.frame(x), ...)
+}
 
-anytable <- function(
-  x, 
+anytable.data.frame <- function(
+  x,
+  rgroup=NULL,
+  n.rgroup=NULL,
+  cgroup=NULL,
+  n.cgroup=NULL,
+  title=deparse(substitute(x)),
+  label=NULL,
+  caption=NULL,
   ...
   ) {
   fmt <- out_format()
@@ -34,7 +51,19 @@ anytable <- function(
     latex = "anytable_latex",
     html = "anytable_html"
     )
-  do.call(fun, c(list(x=x), list(...)))
+  do.call(fun, c(
+    list(
+      x=x,
+      rgroup=rgroup,
+      n.rgroup=n.rgroup,
+      cgroup=cgroup,
+      n.cgroup=n.cgroup,
+      title=title,
+      label=label,
+      caption=caption
+    ),
+    list(...)
+  ) )
 }
 
 
@@ -70,6 +99,10 @@ anytable_html <- function(  x,   ...) {
   if(!is.null(args$n.cgroup))
     args$n.cgroup <- c(1, args$n.cgroup)
   args$compatibility <- "html"
+  if(!is.null(args$title)) {
+    names(x)[1] <- args$title
+    args$title <- NULL
+  }
   
   fun <- get("htmlTable", asNamespace("htmlTable"))
   
@@ -83,3 +116,4 @@ anytable_html <- function(  x,   ...) {
   
   do.call(fun, c(list(x=x), args))
 }
+
