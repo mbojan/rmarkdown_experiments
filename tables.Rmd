@@ -3,16 +3,16 @@ title: "Tables"
 author: "Michał Bojanowski"
 date: "`r Sys.Date()`"
 output: 
+  bookdown::html_document2:
+    toc: yes
+    number_sections: yes
+    keep_md: yes
   bookdown::pdf_document2:
     toc: yes
     number_sections: yes
     keep_tex: yes
     includes:
       in_header: preamble.tex
-  bookdown::html_document2:
-    toc: yes
-    number_sections: yes
-    keep_md: yes
   pdf_document:
     toc: yes
     number_sections: yes
@@ -26,6 +26,10 @@ output:
 ---
 
 ```{r setup, include=FALSE, cache=FALSE}
+library(lme4)
+library(tidyverse)
+library(broom)
+
 source("functions.R")
 
 knitr::opts_chunk$set(
@@ -133,25 +137,12 @@ See table \@ref(tab:tableone) for the application of `anytable()`.
 
 Modele
 
-```{r lmer-models}
-library(lme4)
-library(tidyverse)
-library(broom)
-
+```{r lmer-models, cache=TRUE}
 mod0 <- lmer(Reaction ~ (1 | Subject), sleepstudy)
 mod1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
+```
 
-model_table <- full_join(
-  tidy(mod0),
-  tidy(mod1),
-  by=c("term", "group")
-) %>% mutate(
-  residual = group == "Residual"
-) %>%
-  filter( !grepl("^cor_", term)) %>%
-  arrange(desc(group), residual) %>%
-  select(-starts_with("statistic"), - group, -residual)
-
+```{r lmer-model-table}
 vlabs <- c(
 "sd_(Intercept).Subject" = "Subject",
 "sd_Days.Subject" = "Days",
@@ -165,25 +156,51 @@ vlabs <- data.frame(
   stringsAsFactors = FALSE
 )
 
-model_table %>%
+model_table <- 
+  full_join(
+    tidy(mod0),
+    tidy(mod1),
+    by=c("term", "group"),
+    suffix = c(".1", ".2")
+  ) %>%
+  gather(col, value, ends_with(".1"), ends_with(".2")) %>%
+  extract(col, c("what", "model"), "(.*)\\.([0-9])") %>%
+  mutate(
+    value = round(value, 3),
+    fixed = group == "fixed",
+    residual = group == "Residual"
+  ) %>%
+  filter( what != "statistic", !grepl("^cor_", term) ) %>%
   left_join(vlabs, by="term") %>%
-  select(Variable, ends_with(".x"), ends_with(".y"))
+  unite("k", what, model) %>%
+  spread(k, value) %>%
+  arrange(fixed) %>%
+  select(
+    Variable,
+    Estimate = estimate_1,
+    S.E. = std.error_1,
+    Estimate = estimate_2,
+    S.E. = std.error_2
+  )
 ```
 
 Anytable
 
 ```{r anytable-lmer, results="asis"}
-  anytable_html(
+  anytable(
     model_table,
+    title = "Random effect model",
     rnames = "Variable",
     rgroup = c("Random effects", "Fixed effects"),
     n.rgroup=c(3, 2),
     cgroup = c("Model 1", "Model 2"),
-    n.cgroup = c(2, 2)
+    n.cgroup = c(2, 2),
+    label="lmer",
+    caption = "lmer models."
   )
 ```
 
-
+See \@ref(tab:lmer) for `lmer()` models.
 
 
 
