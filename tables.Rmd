@@ -1,18 +1,18 @@
 ---
 title: "Tables"
 author: "Michał Bojanowski"
-date: "`r Sys.date()`"
+date: "`r Sys.Date()`"
 output: 
-  bookdown::html_document2:
-    toc: yes
-    number_sections: yes
-    keep_md: yes
   bookdown::pdf_document2:
     toc: yes
     number_sections: yes
     keep_tex: yes
     includes:
       in_header: preamble.tex
+  bookdown::html_document2:
+    toc: yes
+    number_sections: yes
+    keep_md: yes
   pdf_document:
     toc: yes
     number_sections: yes
@@ -73,7 +73,8 @@ htmlTable::htmlTable(
   rgroup = c("First group", "Second group"),
   n.rgroup = c(2,3),
   cgroup = c("", paste("Model", 1:2)),
-  n.cgroup = c(1, 2, 2)
+  n.cgroup = c(1, 2, 2),
+  caption = "This is made with 'htmlTable'."
 )
 ```
 
@@ -85,12 +86,14 @@ rownames(dd) <- d$Variable
 Hmisc::latex(
   dd, 
   dcolumn=TRUE,
+  title = "Title",
   file="", booktabs=TRUE, 
   rgroup = c("First group", "Second group"),
   n.rgroup = c(2,3),
   cgroup = paste("Model", 1:2),
   n.cgroup = c(2, 2),
-  assignment = FALSE
+  assignment = FALSE,
+  caption = "This is made with Hmisc::latex."
 )
 ```
 
@@ -111,12 +114,75 @@ anytable(
   cgroup = paste("Model", 1:2),
   n.cgroup = c(2, 2),
   label="tableone",
-  caption = "This is table one."
+  title = "Some table",
+  caption = "This is made with 'anytable'."
 )
 ```
 
 
-See table \@ref(tab:tableone).
+See table \@ref(tab:tableone) for the application of `anytable()`.
+
+
+
+
+
+
+
+
+# LMER
+
+Modele
+
+```{r lmer-models}
+library(lme4)
+library(tidyverse)
+library(broom)
+
+mod0 <- lmer(Reaction ~ (1 | Subject), sleepstudy)
+mod1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
+
+model_table <- full_join(
+  tidy(mod0),
+  tidy(mod1),
+  by=c("term", "group")
+) %>% mutate(
+  residual = group == "Residual"
+) %>%
+  filter( !grepl("^cor_", term)) %>%
+  arrange(desc(group), residual) %>%
+  select(-starts_with("statistic"), - group, -residual)
+
+vlabs <- c(
+"sd_(Intercept).Subject" = "Subject",
+"sd_Days.Subject" = "Days",
+"sd_Observation.Residual" = "Residual",
+"(Intercept)" = "(Intercept)",
+"Days" = "Days"
+)
+vlabs <- data.frame(
+  Variable = vlabs,
+  term = names(vlabs),
+  stringsAsFactors = FALSE
+)
+
+model_table %>%
+  left_join(vlabs, by="term") %>%
+  select(Variable, ends_with(".x"), ends_with(".y"))
+```
+
+Anytable
+
+```{r anytable-lmer, results="asis"}
+  anytable_html(
+    model_table,
+    rnames = "Variable",
+    rgroup = c("Random effects", "Fixed effects"),
+    n.rgroup=c(3, 2),
+    cgroup = c("Model 1", "Model 2"),
+    n.cgroup = c(2, 2)
+  )
+```
+
 
 
 
