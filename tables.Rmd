@@ -1,28 +1,28 @@
 ---
 title: "Tables"
 author: "Michał Bojanowski"
-date: "`r Sys.Date()`"
-output: 
-  bookdown::html_document2:
-    toc: yes
-    number_sections: yes
-    keep_md: yes
+date: '`r Sys.Date()`'
+output:
   bookdown::pdf_document2:
-    toc: yes
-    number_sections: yes
-    keep_tex: yes
     includes:
       in_header: preamble.tex
-  pdf_document:
-    toc: yes
-    number_sections: yes
     keep_tex: yes
-    includes:
-      in_header: preamble.tex
-  html_document:
-    toc: yes
     number_sections: yes
+    toc: yes
+  bookdown::html_document2:
     keep_md: yes
+    number_sections: yes
+    toc: yes
+  html_document:
+    keep_md: yes
+    number_sections: yes
+    toc: yes
+  pdf_document:
+    includes:
+      in_header: preamble.tex
+    keep_tex: yes
+    number_sections: yes
+    toc: yes
 ---
 
 ```{r setup, include=FALSE, cache=FALSE}
@@ -203,6 +203,19 @@ Anytable
 See \@ref(tab:lmer) for `lmer()` models.
 
 
+```{r anytable-lmer-latex, results="markup"}
+  anytable_md(
+    model_table,
+    title = "Random effect model",
+    rnames = "Variable",
+    rgroup = c("Random effects", "Fixed effects"),
+    n.rgroup=c(3, 2),
+    cgroup = c("Model 1", "Model 2"),
+    n.cgroup = c(2, 2),
+    label="lmer",
+    caption = "lmer models."
+  )
+```
 
 
 
