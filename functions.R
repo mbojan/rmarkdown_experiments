@@ -46,10 +46,9 @@ anytable <- function(
     fmt,
     latex = "anytable_latex",
     html = "anytable_html",
-    "i"
+    "anytable_md"
     )
   
-  i <- function(x, ...) x
   do.call(fun, c(
     list(
       x=x,
@@ -65,13 +64,34 @@ anytable <- function(
   ) )
 }
 
+anytable_md <- function(x, ...) {
+  args <- list(...)
+  x[is.na(x)] <- ""
+  # Make flat column names
+  if(!is.null(args$cgroup)) {
+    colindex <- rep( seq(1, length(args$cgroup)), args$n.cgroup)
+    names(x)[-1] <- paste(args$cgroup[colindex], names(x)[-1], sep=":")
+  }
+  cnames <- names(x) # Save for later
+  names(x) <- make.names(cnames, unique=TRUE) # Make unique names
+  # Insert rows for row-group labels
+  if(!is.null(args$rgroup)) {
+    r <- mutate_all(x, funs(return("")))[ rep(1, nrow(x) + length(args$rgroup)) , ]
+    i <- rep( seq(1, length(args$rgroup)), args$n.rgroup + 1)
+    r[!duplicated(i),1] <- args$rgroup
+    r[duplicated(i),] <- x
+  } else {
+    r <- x
+  }
+  knitr::kable(r, row.names=FALSE)
+}
 
 anytable_latex <- function(  x,    ... ) {
   message("latex")
   args <- list(...)
+  args$colheads <- names(x)[-1]
   if(!is.null(args$rnames)) {
-    vnames <- names(x)[ -which( names(x) == args$rnames) ]
-    x <- structure(x[,vnames], row.names=x[,args$rnames], names=vnames)
+    x <- structure(x[,-which( names(x) == args$rnames)], row.names=x[,args$rnames])
     args$rnames <- NULL
   }
   args$file <- ""
@@ -105,6 +125,7 @@ anytable_html <- function(  x,   ...) {
     args$title <- NULL
   }
   args$align <- c("l", rep("r", ncol(x)-1))
+
   
   x[is.na(x)] <- ""
   
