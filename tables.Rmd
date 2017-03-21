@@ -1,12 +1,18 @@
 ---
-title: "Tytuł"
+title: "Tables"
 author: "Michał Bojanowski"
-date: "2016-03-22"
+date: "`r Sys.date()`"
 output: 
   bookdown::html_document2:
     toc: yes
     number_sections: yes
     keep_md: yes
+  bookdown::pdf_document2:
+    toc: yes
+    number_sections: yes
+    keep_tex: yes
+    includes:
+      in_header: preamble.tex
   pdf_document:
     toc: yes
     number_sections: yes
@@ -17,12 +23,6 @@ output:
     toc: yes
     number_sections: yes
     keep_md: yes
-  bookdown::pdf_book:
-    toc: yes
-    number_sections: yes
-    keep_tex: yes
-    includes:
-      in_header: preamble.tex
 ---
 
 ```{r setup, include=FALSE, cache=FALSE}

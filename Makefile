@@ -1,4 +1,4 @@
-files=test
+files=tables
 
 render=Rscript -e 'rmarkdown::render("$<", output_format="$(render_output_format)", output_file="$@")' | tee $(@:=.log)
 render_output_format=
