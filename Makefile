@@ -6,8 +6,9 @@ render_output_format=
 
 
 
+default: $(files:=-2.html) $(files:=-2.pdf)
 
-all: $(foreach f,$(files),$(addprefix $(f),$(suffixes)))
+
 
 %.pdf: %.Rmd
 	$(render)
@@ -35,6 +36,9 @@ all: $(foreach f,$(files),$(addprefix $(f),$(suffixes)))
 
 %-2.html: render_output_format=bookdown::html_document2
 
+
+
+all: $(foreach f,$(files),$(addprefix $(f),$(suffixes)))
 
 all: render_output_format=all
 
