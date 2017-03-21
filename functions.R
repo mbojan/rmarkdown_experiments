@@ -28,13 +28,8 @@ to_word <- function()
 # anytable ---------------------------------------------
 
 
-anytable <- function(x, ...) UseMethod("anytable")
 
-anytable.default <- function(x, ...) {
-  anytable.data.frame(as.data.frame(x), ...)
-}
-
-anytable.data.frame <- function(
+anytable <- function(
   x,
   rgroup=NULL,
   n.rgroup=NULL,
@@ -46,11 +41,15 @@ anytable.data.frame <- function(
   ...
   ) {
   fmt <- out_format()
+  if(is.null(fmt)) fmt <- "none"
   fun <- switch(
     fmt,
     latex = "anytable_latex",
-    html = "anytable_html"
+    html = "anytable_html",
+    "i"
     )
+  
+  i <- function(x, ...) x
   do.call(fun, c(
     list(
       x=x,
@@ -68,10 +67,11 @@ anytable.data.frame <- function(
 
 
 anytable_latex <- function(  x,    ... ) {
+  message("latex")
   args <- list(...)
   if(!is.null(args$rnames)) {
-    vnames <- setdiff(names(x), args$rnames)
-    x <- structure(x[,vnames], row.names=x[,args$rnames])
+    vnames <- names(x)[ -which( names(x) == args$rnames) ]
+    x <- structure(x[,vnames], row.names=x[,args$rnames], names=vnames)
     args$rnames <- NULL
   }
   args$file <- ""
@@ -92,6 +92,7 @@ anytable_latex <- function(  x,    ... ) {
 
 
 anytable_html <- function(  x,   ...) {
+  message("html")
   args <- list(...)
   args$rnames <- FALSE
   if(!is.null(args$cgroup))
@@ -103,6 +104,9 @@ anytable_html <- function(  x,   ...) {
     names(x)[1] <- args$title
     args$title <- NULL
   }
+  args$align <- c("l", rep("r", ncol(x)-1))
+  
+  x[is.na(x)] <- ""
   
   fun <- get("htmlTable", asNamespace("htmlTable"))
   
