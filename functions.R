@@ -23,7 +23,15 @@ to_word <- function()
 
 
 
+# knitr hook producing png from latex pdf --------------
 
+# process chunk output should be "asis" LaTeX. Make a PDF,
+# convert to PNG, insert to md
+
+chunk_hook_latex_png <- function(x, options) {
+  print(x)
+  print(options)
+}
 
 # anytable ---------------------------------------------
 
