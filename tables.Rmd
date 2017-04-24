@@ -136,7 +136,7 @@ See table \@ref(tab:tableone) for the application of `anytable()`.
 
 # LMER
 
-Model
+Models
 
 ```{r lmer-models, cache=TRUE}
 mod0 <- lmer(Reaction ~ (1 | Subject), sleepstudy)
