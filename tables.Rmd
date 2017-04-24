@@ -119,7 +119,8 @@ anytable(
   n.cgroup = c(2, 2),
   label="tableone",
   title = "Some table",
-  caption = "This is made with 'anytable'."
+  caption = "This is made with 'anytable'.",
+  css.cell="padding-left: 5mm; padding-right: 5mm;"
 )
 ```
 
@@ -135,7 +136,7 @@ See table \@ref(tab:tableone) for the application of `anytable()`.
 
 # LMER
 
-Modele
+Model
 
 ```{r lmer-models, cache=TRUE}
 mod0 <- lmer(Reaction ~ (1 | Subject), sleepstudy)
@@ -196,7 +197,8 @@ Anytable
     cgroup = c("Model 1", "Model 2"),
     n.cgroup = c(2, 2),
     label="lmer",
-    caption = "lmer models."
+    caption = "lmer models.",
+    css.cell="padding-left: 5mm; padding-right: 5mm;"
   )
 ```
 
