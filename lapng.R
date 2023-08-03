@@ -45,7 +45,7 @@ system2("pdfcrop", paste0(fname, ".pdf"))
 system2("convert", c(
   "-density 500",
   paste0(fname, "-crop.pdf"),
-  paste0(fname, ".png")
+  paste0("PNG32:", fname, ".png")
 )
 )
 
