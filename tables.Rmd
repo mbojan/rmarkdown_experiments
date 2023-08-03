@@ -29,6 +29,7 @@ output:
 library(lme4)
 library(tidyverse)
 library(broom)
+library(broom.mixed)
 
 source("functions.R")
 
