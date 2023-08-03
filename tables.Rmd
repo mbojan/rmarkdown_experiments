@@ -23,6 +23,8 @@ output:
     keep_tex: yes
     number_sections: yes
     toc: yes
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE, cache=FALSE}
