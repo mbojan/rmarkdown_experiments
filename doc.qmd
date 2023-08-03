@@ -1,0 +1,64 @@
+---
+title: "A document"
+author:
+  - name: Michał Bojanowski
+    orcid: "0000-0001-7503-852X"
+    email: michal2992@gmail.com
+    affiliations:
+      - name: "Kozminski University"
+        city: "Warsaw"
+      - name: "UAB"
+        city: "Barcelona"
+date: "8/3/2023"
+abstract: "This is an abstract."
+format:
+  html: default
+#  pdf: default
+  docx: default
+  elsevier-pdf:
+    keep-tex: true
+    journal:
+      name: "Social Networks"
+      formatting: review
+      model: 1p
+      cite-style: authoryear
+bibliography: refs.bib
+---
+
+# Introduction
+
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+This is some text in the introduction.
+
+# Next section
+
+Here we cite the work of @reeves_etal_2023.
